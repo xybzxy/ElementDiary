@@ -27,6 +27,9 @@ public class TimeSystem : MonoBehaviour
     public float night;
     public float nightLength;
     public Color mixedColor;
+    [Header("是否启用环境颜色变化")]
+    public bool changeColor;
+    public Color normalColor;
     CheatCodeSystem cheatCodeSystem;
     void Start()
     {
@@ -45,11 +48,18 @@ public class TimeSystem : MonoBehaviour
             timePerDay = 0;
             dayCount++;
         }
-        ChangeEnvironmentColorByTime(nightColor,sunriseColor,sunrise,sunriseLength,daytime);
-        ChangeEnvironmentColorByTime(sunriseColor,daytimeColor,daytime,daytimeLength,sunset);
-        ChangeEnvironmentColorByTime(daytimeColor,sunsetColor,sunset,sunsetLength,night);
-        ChangeEnvironmentColorByTime(sunsetColor,nightColor,night,nightLength,sunrise);
-        light.color = mixedColor;
+        if(changeColor)
+        {
+            ChangeEnvironmentColorByTime(nightColor,sunriseColor,sunrise,sunriseLength,daytime);
+            ChangeEnvironmentColorByTime(sunriseColor,daytimeColor,daytime,daytimeLength,sunset);
+            ChangeEnvironmentColorByTime(daytimeColor,sunsetColor,sunset,sunsetLength,night);
+            ChangeEnvironmentColorByTime(sunsetColor,nightColor,night,nightLength,sunrise);
+            light.color = mixedColor; 
+        }
+        else
+        {
+            light.color = normalColor;
+        }
     }
     void ChangeEnvironmentColorByTime(Color startColor,Color targetColor, float startTime, float lastLength, float nextStartTime)
     {
@@ -66,5 +76,9 @@ public class TimeSystem : MonoBehaviour
     {
         time -= addedTime;
         addedTime = cheatCodeSystem.cheatValue - time;
+    }
+    public void ChangeEnvironmentColor(bool a)
+    {
+        changeColor = a;
     }
 }

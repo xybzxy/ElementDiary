@@ -7,6 +7,8 @@ TagManager:
   - Cheat
   - Canvas
   - BuildingGrids
+  - BlackCurtain
+  - Chemical
   layers:
   - Default
   - TransparentFX

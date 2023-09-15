@@ -101,6 +101,7 @@ public class GameDatas
     public Labs[] buildings;
     public string saveTime;
     public string fileName;
+    //public Color color;
 }
 [System.Serializable]
 public class Labs

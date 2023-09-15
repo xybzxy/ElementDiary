@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4498893032587552613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1964792713765706975}
+  - component: {fileID: 4173832321198033932}
+  - component: {fileID: 5598955282915339072}
+  m_Layer: 0
+  m_Name: "\u5B9E\u9A8C\u684C\u7269\u54C1\u7BA1\u7406"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1964792713765706975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498893032587552613}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4173832321198033932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498893032587552613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513c4a4bfb7e9194f833197fe85730a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  takingEquipment: {fileID: 0}
+  cam: {fileID: 1571132714, guid: 8d1c2fd05753e5848af339bc3eeb6aa0, type: 2}
+  equipmentRotateSpeed: 100
+  angleShow: {fileID: 2056026203, guid: 8d1c2fd05753e5848af339bc3eeb6aa0, type: 2}
+  infoShow: {fileID: 0}
+  containerInfo: {fileID: 0}
+  contentShow: {fileID: 1994732628, guid: 8d1c2fd05753e5848af339bc3eeb6aa0, type: 2}
+  contentShowPrefab: {fileID: 7586662459480964420, guid: e8b28b1c4cc14b24db8a44f9b370b7fc, type: 3}
+  normalTemperature: 20
+  airHeatTransferRate: 0.0267
+--- !u!114 &5598955282915339072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498893032587552613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2b061daa4b3064d8d36122d080c9ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materials:
+  - name: glass
+    heatTransferRate: 1.1
+    heatCapacity: 0.75
+    toughness: 2
+  - name: ceramics
+    heatTransferRate: 30
+    heatCapacity: 0
+    toughness: 2
+  - name: iron
+    heatTransferRate: 90
+    heatCapacity: 0
+    toughness: 2
