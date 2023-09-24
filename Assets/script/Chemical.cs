@@ -14,23 +14,26 @@ public class Chemical : MonoBehaviour
     public ExperimentManager manager;
     void Start()
     {
+        Reaction reaction = new Reaction();
+        substance = reaction.FindSubstance(name);
         rg = GetComponent<Rigidbody2D>();
         rg.mass = massOfEachParticle;
         this.GetComponent<SpriteRenderer>().color = QuaternionToColor(new Quaternion(substance.colorR,substance.colorG,substance.colorB,substance.colorA));
         manager = transform.parent.GetComponent<ExperimentManager>();
         temperature = manager.normalTemperature;
+        
     }
     void Update()
     {
         if(temperature > substance.meltingPoint + 1f && temperature < substance.boilingPoint - 1f)
         {
-            state = "liquid";
+            state = "l";
         }
         transform.localScale = new Vector3(size,size,size);
     }
     private void OnTriggerStay2D(Collider2D other) 
     {
-        if(state == "liquid" && other.gameObject.TryGetComponent<Chemical>(out var chemical))
+        if(state == "l" && other.gameObject.TryGetComponent<Chemical>(out var chemical))
         {
             if(chemical.substance.isPolarMolecule == substance.isPolarMolecule)
             {

@@ -69,10 +69,7 @@ public class ReactionSystem
     {
 
     }
-    public void FoundEquation()
-    {
 
-    }
     static string KeyMaker(string sSourceData)
     {
 
@@ -115,6 +112,7 @@ public class ReactionCondition
     }
 }
 //配方类
+[System.Serializable]
 public class Equation
 {
     //反应条件
@@ -203,6 +201,35 @@ public partial class IReactionObject
     public float boilingPoint;
     public float viscosity;
     public bool isPolarMolecule;
+}
+public class Reaction
+{
+    public Substance FindSubstance(string name)//获取物质信息
+    { 
+        Substance foundSub = null;
+        List<Substance> substances = JsonConvert.DeserializeObject<List<Substance>>(System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\substances.txt"));
+        foreach(Substance sub in substances)
+        {
+            if(sub.name == name)
+            {
+                foundSub = sub;
+                break;
+            }
+        }
+        if(foundSub != null)
+        {
+            return foundSub;
+        }
+        else
+        {
+            Debug.LogError("物质"+name+"无法找到！");
+            return null;
+        }
+    }
+    public void FindEquation()
+    {
+
+    }
 }
 
 

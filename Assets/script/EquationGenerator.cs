@@ -27,33 +27,38 @@ public class EquationGenerator : MonoBehaviour
     public Equation equation;
     [Space(20)]
     public List<Substance> substances;
+
+    [Space(20)]
+    [Header("生成新的方程式")]
+    public GameObject equationPrefab;
+    public Transform reactantShow;
+    public Transform resultantShow;
+    public List<Reactant> reactants;
+    public List<Reactant> resultants;
+    public InputField temperatrueInput;
+    public InputField environmentInput;
+    public InputField catalyzerInput;
+    public InputField heatInput;
+    public InputField velocityInput;
+    public List<Equation> equations;
     void Start()
     {
+        equations = JsonConvert.DeserializeObject<List<Equation>>(System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\equations.txt"));
         substances = JsonConvert.DeserializeObject<List<Substance>>(System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\substances.txt"));
         foreach (Substance substance in substances)
         {
             ShowSubstanceContent(substance);
         }
-        ScrollView();
-        /*
-        string[] reactants = {"氯酸钾"};
-        string[] resultants = {"氯化钾","氧气"};
-        condition = new ReactionCondition(400f,"s",null);
-        equation = new Equation(condition,reactants,resultants,0,10);
-        Debug.Log(equation.strKey);
-        string toJsonString = JsonConvert.SerializeObject(equation);
-        System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + @"\equations.txt", toJsonString);
-        Debug.Log("保存成功！");
-        */
+        ScrollView(content,substancePrefab);
     }
     void Update()
     {
         outputColor = QuaternionToColor(new Quaternion(colorR.value,colorG.value,colorB.value,colorA.value));
         colorBoard.color = outputColor;
     }
-    void ScrollView()
+    void ScrollView(Transform content,GameObject prefab)
     {
-        content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,content.childCount * substancePrefab.GetComponent<RectTransform>().sizeDelta.y);
+        content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,content.childCount * prefab.GetComponent<RectTransform>().sizeDelta.y);
     }
     Color QuaternionToColor(Quaternion qua)
     {
@@ -100,7 +105,7 @@ public class EquationGenerator : MonoBehaviour
         {
             ShowSubstanceContent(substance);
         }
-        ScrollView();
+        ScrollView(content,substancePrefab);
     }
     void ShowSubstanceContent(Substance sub)
     {
@@ -119,5 +124,89 @@ public class EquationGenerator : MonoBehaviour
         colorG.value = substance.colorG;
         colorB.value = substance.colorB;
         colorA.value = substance.colorA;
+    }
+    //生成新的配方
+    public void AddNewSubstanceToList(string type)
+    {
+        Transform list;
+        if(type == "Reactant")
+        {
+            list = reactantShow;
+        }
+        else
+        {
+            list = resultantShow;
+        }
+        GameObject newSubstanceShow = Instantiate(equationPrefab,list.position,list.rotation,list);
+        Reactant reactant = new Reactant(newSubstanceShow.transform.GetChild(0).GetComponent<InputField>(),newSubstanceShow.transform.GetChild(1).GetComponent<InputField>());
+        if(type == "Reactant")
+        {
+            reactants.Add(reactant);
+        }
+        else
+        {
+            resultants.Add(reactant);
+        }
+        ScrollView(list,equationPrefab);
+    }
+    public void GenerateEquaration()
+    {
+        int i = 0;
+        int j = 0;
+        if(resultants.Capacity != 0 && reactants.Capacity != 0)
+        {
+            string[] reactantsStr = new string[reactants.Count];
+            string[] resultantsStr = new string[resultants.Count];
+            foreach (Reactant reactant in reactants)
+            {
+                reactant.GetString();
+                reactantsStr[i] = reactant.count + reactant.name;
+                i++;
+            }
+            foreach (Reactant resultant in resultants)
+            {
+                resultant.GetString();
+                resultantsStr[j] = resultant.count + resultant.name;
+                j++;
+            }
+            ReactionCondition condition = new ReactionCondition(float.Parse(temperatrueInput.text),environmentInput.text,null);
+            Equation equation = new Equation(condition,reactantsStr,resultantsStr,float.Parse(heatInput.text),float.Parse(velocityInput.text));
+            if(!equations.Contains(equation))
+            {
+                equations.Add(equation);
+            }
+            //Debug.Log(equation.strKey);
+            string toJsonString = JsonConvert.SerializeObject(equations);
+            System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + @"\equations.txt", toJsonString);
+            //Debug.Log("保存成功！");
+            reactants.Clear();
+            resultants.Clear();
+            for (int a = 0; a < resultantShow.childCount; a++)
+            {
+                Destroy(resultantShow.GetChild(a).gameObject);
+            }
+            for (int a = 0; a < reactantShow.childCount; a++)
+            {
+                Destroy(reactantShow.GetChild(a).gameObject);
+            }
+        }
+    }
+}
+[System.Serializable]
+public class Reactant
+{
+    public InputField countInput;
+    public InputField nameInput;
+    public string count;
+    public string name;
+    public Reactant(InputField co,InputField na)
+    {
+        countInput = co;
+        nameInput = na;
+    }
+    public void GetString()
+    {
+        count = countInput.text;
+        name = nameInput.text;
     }
 }

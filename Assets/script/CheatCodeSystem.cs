@@ -36,7 +36,11 @@ public class CheatCodeSystem : MonoBehaviour
                 isFound = true;
                 if(inputField.text.Length > cheatCodes[i].cheatCode.Length)
                 {
-                    cheatValue = int.Parse(inputField.text.Substring(cheatCodes[i].cheatCode.Length));
+                    try
+                    {
+                        cheatValue = int.Parse(inputField.text.Substring(cheatCodes[i].cheatCode.Length));
+                    }
+                    catch{}
                 }
                 else
                 {

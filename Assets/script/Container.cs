@@ -18,7 +18,8 @@ public class Container : MonoBehaviour
     Rigidbody2D rg;
     public CMaterial material;
     [Header("内容物")]
-    public Chemical[] contents; 
+    public Chemical[] contents;
+    public List<Chemical> contentsList; 
     Transform manager;
     void Start()
     {
@@ -34,6 +35,7 @@ public class Container : MonoBehaviour
     {
         TemperatureCalculate();
         HeatRadiation();
+        contents = contentsList.ToArray();
     }
     void TemperatureCalculate()
     {
@@ -50,20 +52,11 @@ public class Container : MonoBehaviour
     {
         if(other.gameObject.tag == "Chemical" && this.transform.GetChild(0).gameObject.active == true && other.transform.parent != this.transform.GetChild(0))
         {
-            bool isIn = false;
             other.transform.parent = this.transform.GetChild(0);
-            foreach(Chemical chemical in contents)
+            Chemical chem = other.GetComponent<Chemical>();
+            if(!contentsList.Contains(chem))
             {
-                if(chemical == other.GetComponent<Chemical>())
-                {
-                    isIn = true;
-                    break;
-                }
-            }
-            if(!isIn)
-            {
-                contents = AddEmptyElements<Chemical>(contents,1);
-                contents[contents.Length-1] = other.GetComponent<Chemical>();
+                contentsList.Add(chem);
             }
         }
     }
@@ -73,34 +66,16 @@ public class Container : MonoBehaviour
         {
             if(this.transform.GetChild(0).childCount != 0)
             {
+                Chemical chem = other.GetComponent<Chemical>();
+                if(contentsList.Contains(chem) && contentsList.Count != 0)
+                {
+                    contentsList.Remove(chem);
+                }
                 other.transform.SetParent(manager);
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    if(contents[i] == other.GetComponent<Chemical>())
-                    {
-                        contents[i] = null;
-                        break;
-                    }
-                }
-                Chemical[] cons = new Chemical[contents.Length-1];
-                int j = 0;
-                for (int i = 0; i < cons.Length -1; i++)
-                {
-                    if(contents[i] != null)
-                    {
-                        if(i+j <= contents.Length - 1)
-                            cons[i] = contents[i+j];
-                    }
-                    else
-                    {
-                        j++;
-                        if(i+j <= contents.Length - 1)
-                            cons[i] = contents[i+j];
-                    }
-                }
             }
         }
     }
+    /*
     public T[] AddEmptyElements<T>(T[] array, int count)
     {
         T[] newArray = new T[array.Length + count];
@@ -112,4 +87,5 @@ public class Container : MonoBehaviour
         
         return newArray;
     }
+    */
 }
