@@ -18,7 +18,7 @@ public class Container : MonoBehaviour
     Rigidbody2D rg;
     public CMaterial material;
     [Header("内容物")]
-    public Chemical[] contents;
+    //public Chemical[] contents;
     public List<Chemical> contentsList; 
     Transform manager;
     void Start()
@@ -35,7 +35,7 @@ public class Container : MonoBehaviour
     {
         TemperatureCalculate();
         HeatRadiation();
-        contents = contentsList.ToArray();
+        RemoveChemicals();
     }
     void TemperatureCalculate()
     {
@@ -53,28 +53,54 @@ public class Container : MonoBehaviour
         if(other.gameObject.tag == "Chemical" && this.transform.GetChild(0).gameObject.active == true && other.transform.parent != this.transform.GetChild(0))
         {
             other.transform.parent = this.transform.GetChild(0);
-            Chemical chem = other.GetComponent<Chemical>();
+            CheckChemicals();
+        }
+    }
+    /*
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if(other.gameObject.tag == "Chemical" && this.transform.GetChild(0).gameObject.active == true)
+        {
+            Chemical chem = other.gameObject.GetComponent<Chemical>();
+            if(contentsList.Contains(chem))
+            {
+                contentsList.Remove(chem);
+            }
+        }
+    }
+    */
+    void RemoveChemicals()
+    {
+        List<Chemical> chems = new List<Chemical>();
+        foreach (Chemical chem in contentsList)
+        {
+            if(chem.transform.parent != this.transform.GetChild(0))
+            {
+                chems.Add(chem);
+            }
+        }
+        foreach (Chemical chem in chems)
+        {
+            contentsList.Remove(chem);
+        }
+    }
+    void CheckChemicals()
+    {
+        for (int i = 0; i < this.transform.GetChild(0).childCount; i++)
+        {
+            Chemical chem = this.transform.GetChild(0).GetChild(i).GetComponent<Chemical>();
             if(!contentsList.Contains(chem))
             {
                 contentsList.Add(chem);
             }
         }
     }
-    private void OnTriggerExit2D(Collider2D other) 
+    public Chemical[] GetContent()//获得数组形式的内容物
     {
-        if(other.gameObject.tag == "Chemical" && this.transform.GetChild(0).gameObject.active == true)
-        {
-            if(this.transform.GetChild(0).childCount != 0)
-            {
-                Chemical chem = other.GetComponent<Chemical>();
-                if(contentsList.Contains(chem) && contentsList.Count != 0)
-                {
-                    contentsList.Remove(chem);
-                }
-                other.transform.SetParent(manager);
-            }
-        }
+        Chemical[] cons = contentsList.ToArray();
+        return cons;
     }
+    
     /*
     public T[] AddEmptyElements<T>(T[] array, int count)
     {

@@ -56,7 +56,7 @@ public class ExperimentManager : MonoBehaviour
                 Destroy(contentShow.GetChild(i).gameObject);
             }
         }
-        Chemical[] contents = con.contents;
+        Chemical[] contents = con.GetContent();
         string[] names = new string[contents.Length];
         for (int i = 0; i < contents.Length; i++)
         {
@@ -75,7 +75,7 @@ public class ExperimentManager : MonoBehaviour
             if(infos[i].name != "")
             {
                 GameObject textBoard = Instantiate(contentShowPrefab,contentShow.position,contentShow.rotation,contentShow);
-                textBoard.transform.GetChild(0).GetComponent<Text>().text = infos[i].name + " " + infos[i].count*infos[i].FindParticleMass(infos[i].name,contents)*1000f + "g";
+                textBoard.transform.GetChild(0).GetComponent<Text>().text = infos[i].name + " " + infos[i].count*infos[i].FindParticleMass(infos[i].name,contents) + "g";
             }
         }
     }

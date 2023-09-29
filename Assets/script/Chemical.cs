@@ -21,7 +21,7 @@ public class Chemical : MonoBehaviour
         this.GetComponent<SpriteRenderer>().color = QuaternionToColor(new Quaternion(substance.colorR,substance.colorG,substance.colorB,substance.colorA));
         manager = transform.parent.GetComponent<ExperimentManager>();
         temperature = manager.normalTemperature;
-        
+        massOfEachParticle = substance.molecularMass*0.001f;
     }
     void Update()
     {
