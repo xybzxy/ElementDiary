@@ -11,6 +11,7 @@ TagManager:
   - Chemical
   - BackGround
   - BagCell
+  - BagObject
   layers:
   - Default
   - TransparentFX
