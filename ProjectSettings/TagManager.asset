@@ -9,6 +9,8 @@ TagManager:
   - BuildingGrids
   - BlackCurtain
   - Chemical
+  - BackGround
+  - BagCell
   layers:
   - Default
   - TransparentFX
